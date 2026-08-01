@@ -1,11 +1,5 @@
 {
-  "functions": {
-    "index.py": {
-      "runtime": "python3.12"
-    }
-  },
   "rewrites": [
-    { "source": "/index", "destination": "/index.py" },
-    { "source": "/(.*)", "destination": "/index.py" }
+    { "source": "/(.*)", "destination": "/api/index" }
   ]
 }
