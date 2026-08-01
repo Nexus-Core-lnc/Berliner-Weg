@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — Berliner Weg</title>
+  <meta name="description" content="Berliner Weg, institut privé de langue allemande à Yaoundé. Cours d'allemand A1 à C2, accompagnement visa études et orientation emploi en Allemagne.">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.jpeg') }}">
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+    :root {
+      --navy: #0f2a5c;
+      --navy-deep: #081934;
+      --gold: #f0b429;
+      --gold-deep: #c8930f;
+      --paper: #f7f5ef;
+      --ink: #1a1d29;
+      --slate: #4a5568;
+      --line: #d8d3c4;
+      --font-display: 'Comfortaa', sans-serif;
+      --font-body: 'Ubuntu', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      margin: 0 0 0.5em;
+      letter-spacing: -0.01em;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .site-header {
+      background: var(--navy-deep);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 3px solid var(--gold);
+    }
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img {
+      height: 42px;
+      width: auto;
+      border-radius: 50%;
+      background: #fff;
+      padding: 2px;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .brand-text strong {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+    }
+    .brand-text span {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: #cfd6e6;
+      padding: 9px 16px;
+      border-radius: 8px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold);
+      background-color: rgba(240, 180, 41, 0.1);
+    }
+    .nav-icon {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+    .nav-links a:hover .nav-icon, .nav-links a.active .nav-icon {
+      transform: translateY(-1px) scale(1.1);
+    }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy-deep) !important;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .nav-cta:hover {
+      background-color: #ffc94d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(240, 180, 41, 0.35);
+    }
+
+    /* ---------- BANDE PROMO DÉFILANTE ---------- */
+    .promo-banner {
+      background: var(--gold);
+      color: var(--navy-deep);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--gold-deep);
+    }
+    .promo-scroll {
+      display: inline-block;
+      animation: scrollPromo 22s linear infinite;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .promo-scroll span {
+      display: inline-block;
+      margin-right: 60px;
+    }
+    .promo-scroll a {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .promo-scroll a:hover {
+      color: #fff;
+    }
+
+    @keyframes scrollPromo {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ---------- PERFORATION ---------- */
+    .perforation {
+      height: 24px;
+      position: relative;
+      background: var(--paper);
+    }
+    .perforation::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      border-top: 2px dashed var(--line);
+    }
+    .perforation.on-navy::before { border-top-color: rgba(255,255,255,0.25); }
+    .perforation.on-navy { background: var(--navy-deep); }
+
+    /* ---------- CONTACT SECTION ---------- */
+    .section { padding: 64px 0; }
+    .section-head { max-width: 640px; margin: 0 auto 40px; text-align: center; }
+    .section-head h2 { font-size: 2rem; }
+    .section-head p { color: var(--slate); }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: stretch;
+    }
+
+    /* Carte des coordonnées */
+    .contact-card-info {
+      background: #fff;
+      border-radius: 16px;
+      padding: 32px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      border: 1px solid var(--line);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .contact-card-info:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .contact-item .icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.3rem;
+      color: #fff;
+      transition: transform 0.2s ease;
+    }
+    .contact-item:hover .icon-circle {
+      transform: scale(1.08);
+    }
+    .icon-whatsapp { background: #25D366; }
+    .icon-phone { background: var(--gold-deep); }
+    .icon-email { background: #e74c3c; }
+    .icon-map { background: #2e86de; }
+    .icon-globe { background: var(--navy); }
+
+    .contact-item .content {
+      flex: 1;
+    }
+    .contact-item .content .label {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--slate);
+      letter-spacing: 0.04em;
+      margin-bottom: 2px;
+    }
+    .contact-item .content .value {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--ink);
+      word-break: break-word;
+    }
+    .contact-item .content .value a {
+      color: inherit;
+      transition: color 0.2s;
+    }
+    .contact-item .content .value a:hover {
+      color: var(--gold-deep);
+    }
+
+    /* Carte Google Maps */
+    .contact-card-map {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+      border: 1px solid var(--line);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      min-height: 400px;
+    }
+    .contact-card-map:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 32px rgba(0,0,0,0.08);
+    }
+    .contact-card-map iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 400px;
+      border: 0;
+      display: block;
+    }
+
+    /* CTA band */
+    .cta-band {
+      background: var(--navy);
+      color: #fff;
+      padding: 56px 0;
+      text-align: center;
+    }
+    .cta-band h2 { color: #fff; }
+    .cta-band p { color: #cfd6e6; margin-bottom: 24px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 26px;
+      border-radius: 6px;
+      font-weight: 700;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--gold); color: var(--navy-deep); }
+    .btn-primary:hover { box-shadow: 0 8px 20px rgba(240,180,41,0.35); }
+
+    /* ---------- FOOTER ---------- */
+    .site-footer {
+      background: var(--navy-deep);
+      color: #b9c1d6;
+      padding: 40px 0 24px;
+      font-size: 0.88rem;
+    }
+    .site-footer .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .site-footer .foot-brand {
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+    .site-footer .gold { color: var(--gold); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .contact-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .promo-scroll { font-size: 0.85rem; }
+    }
+    @media (max-width: 560px) {
+      .contact-card-info { padding: 24px; }
+      .contact-item .content .value { font-size: 0.95rem; }
+      .contact-card-map { min-height: 250px; }
+      .contact-card-map iframe { min-height: 250px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+      .promo-scroll { animation: none; white-space: normal; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== MENU ===== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="{{ url_for('accueil') }}" class="brand">
+        <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo Berliner Weg">
+        <div class="brand-text">
+          <strong>Berliner Weg</strong>
+          <span>La clé du visa allemand</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li>
+            <a href="{{ url_for('apropos') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16.5"></line><circle cx="12" cy="7.8" r="0.9" fill="currentColor" stroke="none"></circle></svg>
+              <span>À propos</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('services') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"></rect></svg>
+              <span>Nos services</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('cours') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+              <span>Cours</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('contact') }}" class="active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('rendez_vous') }}" class="nav-cta">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"></line><line x1="8" y1="3" x2="8" y2="6.5"></line><line x1="16" y1="3" x2="16" y2="6.5"></line></svg>
+              <span>Rendez-vous</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== BANDE DÉFILANTE ===== -->
+  <div class="promo-banner">
+    <div class="promo-scroll">
+      <span><i class="fas fa-star" style="color: var(--navy-deep);"></i> Inscription gratuite pour les 10 premiers inscrits</span>
+      <span><strong><a href="{{ url_for('rendez_vous') }}">Réserver ma place →</a></strong></span>
+      <span><i class="fas fa-star" style="color: var(--navy-deep);"></i> Inscription gratuite pour les 10 premiers inscrits</span>
+      <span><strong><a href="{{ url_for('rendez_vous') }}">Réserver ma place →</a></strong></span>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- ===== SECTION CONTACT ===== -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Contactez-nous</h2>
+        <p>En face de la BICEC Biyem-Assi, Yaoundé — Cameroun</p>
+      </div>
+
+      <div class="container">
+        <div class="contact-grid">
+          <!-- Carte des coordonnées -->
+          <div class="contact-card-info">
+            <!-- WhatsApp -->
+            <div class="contact-item">
+              <div class="icon-circle icon-whatsapp"><i class="fab fa-whatsapp"></i></div>
+              <div class="content">
+                <div class="label">WhatsApp</div>
+                <div class="value"><a href="https://wa.me/237686170374" target="_blank">+237 686 17 03 74</a></div>
+              </div>
+            </div>
+
+            <!-- Téléphone -->
+            <div class="contact-item">
+              <div class="icon-circle icon-phone"><i class="fas fa-phone-alt"></i></div>
+              <div class="content">
+                <div class="label">Téléphone</div>
+                <div class="value">
+                  <a href="tel:+237692769251">+237 692 769 251</a><br>
+                  <a href="tel:+237650218023">+237 650 218 023</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email (ajouté) -->
+            <div class="contact-item">
+              <div class="icon-circle icon-email"><i class="fas fa-envelope"></i></div>
+              <div class="content">
+                <div class="label">Email</div>
+                <div class="value"><a href="mailto:contact@berlinerweg.com">contact@berlinerweg.com</a></div>
+              </div>
+            </div>
+
+            <!-- Adresse -->
+            <div class="contact-item">
+              <div class="icon-circle icon-map"><i class="fas fa-map-marker-alt"></i></div>
+              <div class="content">
+                <div class="label">Adresse</div>
+                <div class="value">
+                  <a href="https://www.google.com/maps/dir//BICEC+Biyem-Assi+Yaounde" target="_blank">
+                    En face BICEC Biyem-Assi, Yaoundé, Cameroun
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Site web -->
+            <div class="contact-item">
+              <div class="icon-circle icon-globe"><i class="fas fa-globe"></i></div>
+              <div class="content">
+                <div class="label">Site web</div>
+                <div class="value"><a href="https://www.berlinerweg.com" target="_blank">www.berlinerweg.com</a></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Carte Google Maps -->
+          <div class="contact-card-map">
+            <iframe
+              loading="lazy"
+              src="https://www.google.com/maps?q=BICEC+Biyem-Assi+Yaounde&output=embed"
+              title="Localisation Berliner Weg">
+            </iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="perforation"></div>
+
+    <!-- ===== CTA BAND ===== -->
+    <section class="cta-band">
+      <div class="container">
+        <h2>Prêt à réserver votre place ?</h2>
+        <a href="{{ url_for('rendez_vous') }}" class="btn btn-primary">Prendre rendez-vous →</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <div class="foot-brand">Berliner Weg</div>
+        <p>Institut privé de langue allemande<br>En face BICEC Biyem-Assi, Yaoundé — Cameroun</p>
+      </div>
+      <div>
+        <p>WhatsApp : <span class="gold">+237 686 17 03 74</span><br>
+        Téléphone : +237 692 769 251 / +237 650 218 023</p>
+      </div>
+      <div>
+        <p>Cours A1 → C2<br>© {{ now.year }} Berliner Weg. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

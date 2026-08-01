@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Prendre rendez-vous — Berliner Weg</title>
+  <meta name="description" content="Berliner Weg, institut privé de langue allemande à Yaoundé. Cours d'allemand A1 à C2, accompagnement visa études et orientation emploi en Allemagne.">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.jpeg') }}">
+  <!-- FontAwesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+    :root {
+      --navy: #0f2a5c;
+      --navy-deep: #081934;
+      --gold: #f0b429;
+      --gold-deep: #c8930f;
+      --paper: #f7f5ef;
+      --ink: #1a1d29;
+      --slate: #4a5568;
+      --line: #d8d3c4;
+      --font-display: 'Comfortaa', sans-serif;
+      --font-body: 'Ubuntu', sans-serif;
+      --font-mono: 'IBM Plex Mono', monospace;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: var(--font-display);
+      margin: 0 0 0.5em;
+      letter-spacing: -0.01em;
+    }
+    a { color: inherit; }
+
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ---------- HEADER ---------- */
+    .site-header {
+      background: var(--navy-deep);
+      color: #fff;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 3px solid var(--gold);
+    }
+    .site-header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+    .brand img {
+      height: 42px;
+      width: auto;
+      border-radius: 50%;
+      background: #fff;
+      padding: 2px;
+    }
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+    .brand-text strong {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.02em;
+    }
+    .brand-text span {
+      font-size: 0.7rem;
+      color: var(--gold);
+      font-style: italic;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .nav-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      color: #cfd6e6;
+      padding: 9px 16px;
+      border-radius: 8px;
+      transition: color 0.2s ease, background-color 0.2s ease;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--gold);
+      background-color: rgba(240, 180, 41, 0.1);
+    }
+    .nav-icon {
+      width: 19px;
+      height: 19px;
+      flex-shrink: 0;
+      transition: transform 0.25s ease;
+    }
+    .nav-links a:hover .nav-icon, .nav-links a.active .nav-icon {
+      transform: translateY(-1px) scale(1.1);
+    }
+    .nav-cta {
+      background: var(--gold);
+      color: var(--navy-deep) !important;
+      padding: 10px 20px;
+      border-radius: 6px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .nav-cta:hover {
+      background-color: #ffc94d;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(240, 180, 41, 0.35);
+    }
+
+    /* ---------- BANDE PROMO DÉFILANTE ---------- */
+    .promo-banner {
+      background: var(--gold);
+      color: var(--navy-deep);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--gold-deep);
+    }
+    .promo-scroll {
+      display: inline-block;
+      animation: scrollPromo 22s linear infinite;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    .promo-scroll span {
+      display: inline-block;
+      margin-right: 60px;
+    }
+    .promo-scroll a {
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .promo-scroll a:hover {
+      color: #fff;
+    }
+
+    @keyframes scrollPromo {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ---------- PERFORATION ---------- */
+    .perforation {
+      height: 24px;
+      position: relative;
+      background: var(--paper);
+    }
+    .perforation::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      border-top: 2px dashed var(--line);
+    }
+    .perforation.on-navy::before { border-top-color: rgba(255,255,255,0.25); }
+    .perforation.on-navy { background: var(--navy-deep); }
+
+    /* ---------- SECTIONS ---------- */
+    .section { padding: 64px 0; }
+    .section-alt { background: #fff; }
+    .section-head { max-width: 640px; margin: 0 auto 40px; text-align: center; }
+    .section-head h2 { font-size: 2rem; }
+    .section-head p { color: var(--slate); }
+
+    /* ---------- FORMULAIRE AMÉLIORÉ ---------- */
+    .form-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 40px;
+      max-width: 720px;
+      margin: 0 auto;
+      border-top: 6px solid var(--gold);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.04);
+    }
+
+    .form-row {
+      margin-bottom: 22px;
+    }
+    .form-row label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .form-row label i {
+      color: var(--gold-deep);
+      width: 1.2rem;
+      text-align: center;
+    }
+    .form-row label .required {
+      color: #e74c3c;
+      font-size: 0.8rem;
+      margin-left: 4px;
+    }
+    .form-row .help-text {
+      font-size: 0.78rem;
+      color: var(--slate);
+      margin-top: 4px;
+      display: block;
+    }
+
+    .form-row input,
+    .form-row select,
+    .form-row textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      background: #fafaf8;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .form-row input:focus,
+    .form-row select:focus,
+    .form-row textarea:focus {
+      outline: none;
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(240, 180, 41, 0.15);
+      background: #fff;
+    }
+    .form-row input:invalid:not(:placeholder-shown),
+    .form-row select:invalid:not(:placeholder-shown) {
+      border-color: #e74c3c;
+    }
+    .form-row input:valid:not(:placeholder-shown),
+    .form-row select:valid:not(:placeholder-shown) {
+      border-color: #27ae60;
+    }
+
+    .form-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin: 16px 0 24px;
+    }
+    .checkbox-row input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      margin-top: 4px;
+      accent-color: var(--gold);
+      flex-shrink: 0;
+    }
+    .checkbox-row label {
+      font-size: 0.9rem;
+      color: var(--slate);
+    }
+    .checkbox-row label a {
+      color: var(--navy);
+      text-decoration: underline;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease;
+    }
+    .btn-primary {
+      background: var(--gold);
+      color: var(--navy-deep);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(240,180,41,0.35);
+      background: #ffc94d;
+    }
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    .btn-block {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ---------- MESSAGE DE CONFIRMATION ---------- */
+    .flash {
+      padding: 14px 18px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+    .flash.success {
+      background: #e3f7e9;
+      color: #1b6b3a;
+      border: 1px solid #a8e3bb;
+    }
+    .flash.error {
+      background: #fdeaea;
+      color: #a12525;
+      border: 1px solid #f3b6b6;
+    }
+
+    /* ---------- FOOTER ---------- */
+    .site-footer {
+      background: var(--navy-deep);
+      color: #b9c1d6;
+      padding: 40px 0 24px;
+      font-size: 0.88rem;
+    }
+    .site-footer .container {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .site-footer .foot-brand {
+      color: #fff;
+      font-family: var(--font-display);
+      font-weight: 600;
+    }
+    .site-footer .gold { color: var(--gold); }
+
+    /* ---------- RESPONSIVE ---------- */
+    @media (max-width: 900px) {
+      .form-grid-2 { grid-template-columns: 1fr; gap: 0; }
+      .nav-links { display: none; }
+      .promo-scroll { font-size: 0.85rem; }
+    }
+    @media (max-width: 560px) {
+      .form-card { padding: 24px; }
+      .section { padding: 40px 0; }
+      .checkbox-row { flex-wrap: wrap; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+      .promo-scroll { animation: none; white-space: normal; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== MENU ===== -->
+  <header class="site-header">
+    <div class="container">
+      <a href="{{ url_for('accueil') }}" class="brand">
+        <img src="{{ url_for('static', filename='img/logo.jpeg') }}" alt="Logo Berliner Weg">
+        <div class="brand-text">
+          <strong>Berliner Weg</strong>
+          <span>La clé du visa allemand</span>
+        </div>
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li>
+            <a href="{{ url_for('apropos') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16.5"></line><circle cx="12" cy="7.8" r="0.9" fill="currentColor" stroke="none"></circle></svg>
+              <span>À propos</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('services') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"></rect><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"></rect><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"></rect></svg>
+              <span>Nos services</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('cours') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v12H4z"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="12" y2="14"/></svg>
+              <span>Cours</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('contact') }}">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <span>Contact</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{ url_for('rendez_vous') }}" class="nav-cta active">
+              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="2"></rect><line x1="3.5" y1="9.5" x2="20.5" y2="9.5"></line><line x1="8" y1="3" x2="8" y2="6.5"></line><line x1="16" y1="3" x2="16" y2="6.5"></line></svg>
+              <span>Rendez-vous</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== BANDE DÉFILANTE ===== -->
+  <div class="promo-banner">
+    <div class="promo-scroll">
+      <span><i class="fas fa-star" style="color: var(--navy-deep);"></i> Inscription gratuite pour les 10 premiers inscrits</span>
+      <span><strong><a href="{{ url_for('rendez_vous') }}">Réserver ma place →</a></strong></span>
+      <span><i class="fas fa-star" style="color: var(--navy-deep);"></i> Inscription gratuite pour les 10 premiers inscrits</span>
+      <span><strong><a href="{{ url_for('rendez_vous') }}">Réserver ma place →</a></strong></span>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <main>
+
+    <!-- ===== SECTION FORMULAIRE ===== -->
+    <section class="section">
+      <div class="section-head">
+        <h2>Prendre rendez-vous</h2>
+        <p>Remplissez ce formulaire, vous recevrez une confirmation par email et notre équipe vous contactera pour finaliser l'horaire.</p>
+      </div>
+
+      <div class="container">
+        <!-- Affichage des messages flash (simulés ici, mais gérés par Flask) -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="flash {{ category }}">{{ message }}</div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <form class="form-card" method="POST" action="{{ url_for('rendez_vous') }}" novalidate>
+          <!-- Identité -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="prenom">
+                <i class="fas fa-user"></i> Prénom <span class="required">*</span>
+              </label>
+              <input type="text" id="prenom" name="prenom" required minlength="2" placeholder="Votre prénom">
+            </div>
+            <div class="form-row">
+              <label for="nom">
+                <i class="fas fa-user"></i> Nom <span class="required">*</span>
+              </label>
+              <input type="text" id="nom" name="nom" required minlength="2" placeholder="Votre nom">
+            </div>
+          </div>
+
+          <!-- Coordonnées -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="email">
+                <i class="fas fa-envelope"></i> Email <span class="required">*</span>
+              </label>
+              <input type="email" id="email" name="email" required placeholder="exemple@domaine.com">
+            </div>
+            <div class="form-row">
+              <label for="telephone">
+                <i class="fas fa-phone-alt"></i> Téléphone / WhatsApp
+              </label>
+              <input type="tel" id="telephone" name="telephone" placeholder="+237 6XX XXX XXX" pattern="[\+\d\s\-\(\)]{8,20}">
+              <span class="help-text">Format international recommandé.</span>
+            </div>
+          </div>
+
+          <!-- Pays / localisation -->
+          <div class="form-row">
+            <label for="pays">
+              <i class="fas fa-globe-africa"></i> Pays de résidence <span class="required">*</span>
+            </label>
+            <select id="pays" name="pays" required>
+              <option value="">Sélectionnez votre pays</option>
+              <option value="Cameroun">Cameroun</option>
+              <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+              <option value="Sénégal">Sénégal</option>
+              <option value="Mali">Mali</option>
+              <option value="Burkina Faso">Burkina Faso</option>
+              <option value="Guinée">Guinée</option>
+              <option value="RDC">RDC</option>
+              <option value="Gabon">Gabon</option>
+              <option value="Togo">Togo</option>
+              <option value="Bénin">Bénin</option>
+              <option value="Autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Niveau et type de rendez-vous -->
+          <div class="form-grid-2">
+            <div class="form-row">
+              <label for="niveau">
+                <i class="fas fa-graduation-cap"></i> Niveau souhaité
+              </label>
+              <select id="niveau" name="niveau">
+                <option value="">Je ne sais pas encore</option>
+                {% for n in niveaux %}
+                <option value="{{ n.label }}">{{ n.label }} — {{ n.desc }}</option>
+                {% endfor %}
+                <option value="Autre">Autre</option>
+              </select>
+              <span class="help-text">Laissez vide si vous hésitez, nous vous conseillerons.</span>
+            </div>
+            <div class="form-row">
+              <label for="type_rdv">
+                <i class="fas fa-video"></i> Type de rendez-vous
+              </label>
+              <select id="type_rdv" name="type_rdv">
+                <option value="presentiel">En présentiel (Yaoundé)</option>
+                <option value="en_ligne">En ligne (visioconférence)</option>
+                <option value="telephonique">Téléphonique</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Date / heure -->
+          <div class="form-row">
+            <label for="date_rdv">
+              <i class="far fa-calendar-alt"></i> Date et heure souhaitées <span class="required">*</span>
+            </label>
+            <input type="datetime-local" id="date_rdv" name="date_rdv" required>
+            <span class="help-text">Nous vous confirmerons la disponibilité par retour.</span>
+          </div>
+
+          <!-- Message -->
+          <div class="form-row">
+            <label for="message">
+              <i class="fas fa-pencil-alt"></i> Message (facultatif)
+            </label>
+            <textarea id="message" name="message" rows="4" placeholder="Précisez vos disponibilités, vos questions, ou tout autre détail..."></textarea>
+          </div>
+
+          <!-- Comment avez-vous connu -->
+          <div class="form-row">
+            <label for="source">
+              <i class="fas fa-info-circle"></i> Comment avez-vous connu Berliner Weg ?
+            </label>
+            <select id="source" name="source">
+              <option value="">Sélectionnez...</option>
+              <option value="recommandation">Recommandation d'un ami</option>
+              <option value="facebook">Facebook</option>
+              <option value="instagram">Instagram</option>
+              <option value="google">Google / Moteur de recherche</option>
+              <option value="flyer">Flyer / affiche</option>
+              <option value="evenement">Événement / salon</option>
+              <option value="presse">Presse / radio</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+
+          <!-- Acceptation des conditions -->
+          <div class="checkbox-row">
+            <input type="checkbox" id="consent" name="consent" required>
+            <label for="consent">
+              J'accepte que Berliner Weg traite mes données personnelles pour la gestion de mon rendez-vous.
+              Conformément au RGPD, je pourrai demander la suppression de mes données à tout moment.
+              <a href="#" target="_blank">En savoir plus</a>.
+              <span class="required">*</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-block">
+            <i class="fas fa-paper-plane"></i> Envoyer ma demande
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div>
+        <div class="foot-brand">Berliner Weg</div>
+        <p>Institut privé de langue allemande<br>En face BICEC Biyem-Assi, Yaoundé — Cameroun</p>
+      </div>
+      <div>
+        <p>WhatsApp : <span class="gold">+237 686 17 03 74</span><br>
+        Téléphone : +237 692 769 251 / +237 650 218 023</p>
+      </div>
+      <div>
+        <p>Cours A1 → C2<br>© {{ now.year }} Berliner Weg. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
