@@ -140,6 +140,32 @@
       box-shadow: 0 6px 16px rgba(240, 180, 41, 0.35);
     }
 
+    /* ---------- HAMBURGER (mobile) ---------- */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 3px;
+      background: #fff;
+      border-radius: 2px;
+      transition: transform 0.25s ease, opacity 0.25s ease;
+    }
+    .hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
     /* ---------- BANDE PROMO DÉFILANTE ---------- */
     .promo-banner {
       background: var(--gold);
@@ -443,7 +469,25 @@
       .hero-grid { grid-template-columns: 1fr; }
       .levels-grid { grid-template-columns: repeat(2, 1fr); }
       .adv-grid { grid-template-columns: 1fr 1fr; }
-      .nav-links { display: none; }
+
+      .site-header .container { position: relative; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 76px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+        background: var(--navy-deep);
+        padding: 12px 24px 20px;
+        border-bottom: 3px solid var(--gold);
+      }
+      .nav-links.open { display: flex; }
+      .nav-cta { align-self: flex-start; }
+
       .promo-scroll { font-size: 0.85rem; }
     }
     @media (max-width: 560px) {
@@ -471,7 +515,7 @@
         </div>
       </a>
       <nav>
-        <ul class="nav-links">
+        <ul class="nav-links" id="navLinks">
           <li>
             <a href="{{ url_for('apropos') }}" class="{{ 'active' if request.endpoint == 'apropos' }}">
               <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"></circle><line x1="12" y1="11" x2="12" y2="16.5"></line><circle cx="12" cy="7.8" r="0.9" fill="currentColor" stroke="none"></circle></svg>
@@ -492,6 +536,9 @@
           </li>
         </ul>
       </nav>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Ouvrir le menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
   </header>
 
@@ -538,5 +585,14 @@
     </div>
   </footer>
 
+  <script>
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const navLinks = document.getElementById('navLinks');
+    hamburgerBtn.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      hamburgerBtn.classList.toggle('open', isOpen);
+      hamburgerBtn.setAttribute('aria-expanded', isOpen);
+    });
+  </script>
 </body>
 </html>
